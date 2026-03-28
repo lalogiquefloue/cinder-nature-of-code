@@ -5,7 +5,7 @@
 #include "../include/SteeredWalker.h"
 #include "utilities.h"
 
-#define BIAS 0.15f
+#define BIAS_RATIO 0.2f // should be lower than 0.25f
 
 using namespace ci;
 using namespace ci::app;
@@ -35,28 +35,19 @@ void exercise_0_3::update()
 {
 	vec2 dir = (vec2)mousePos - walker.pos;
 	float len = glm::length(dir);
+	vec2 unitVector = dir / len;
 
 	float up = 0.25f;
 	float down = 0.25f;
 	float left = 0.25f;
 	float right = 0.25f;
 
-	if (len > 0) {
-		if (dir.x > 0) {
-			right += BIAS;
-			left  -= BIAS;
-		} else {
-			left  += BIAS;
-			right -= BIAS;
-		}
-
-		if (dir.y > 0) {
-			up   += BIAS;
-			down -= BIAS;
-		} else {
-			down += BIAS;
-			up   -= BIAS;
-		}
+	if (len > 0)
+	{
+		up += BIAS_RATIO * unitVector.y;
+		down -= BIAS_RATIO * unitVector.y;
+		right += BIAS_RATIO * unitVector.x;
+		left -= BIAS_RATIO * unitVector.x;
 	}
 
 	walker.mWeights = {up, down, left, right};

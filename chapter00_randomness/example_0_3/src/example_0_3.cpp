@@ -18,17 +18,17 @@ public:
 	void update() override;
 	void draw() override;
 
-	WeightedWalker walker;
+	WeightedWalker mWalker;
 };
 
 void example_0_3::setup()
 {
-	walker = WeightedWalker({0.2f, 0.2f, 0.2f, 0.4f});
+	mWalker = WeightedWalker({0.2f, 0.2f, 0.2f, 0.4f});
 }
 
 void example_0_3::mouseDown(MouseEvent event)
 {
-	walker.reset();
+	mWalker.reset();
 }
 
 void example_0_3::keyDown(KeyEvent event)
@@ -41,15 +41,17 @@ void example_0_3::keyDown(KeyEvent event)
 
 void example_0_3::update()
 {
-	walker.step(3);
+	mWalker.step(3);
 }
 
 void example_0_3::draw()
 {
 	gl::clear(Color(0, 0, 0));
+
 	gl::enableAlphaBlending();
 	gl::color(ColorA(1.0f, 1.0f, 1.0f, 0.25f));
-	for (const vec2& pos : walker.getPosHistory())
+
+	for (const vec2& pos : mWalker.getPosHistory())
 	{
 		gl::drawSolidCircle(pos, 1.0f);
 	}

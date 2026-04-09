@@ -22,18 +22,18 @@ public:
 	void mouseDown(MouseEvent event) override;
 	void keyDown(KeyEvent event) override;
 
-	SteeredWalker walker;
-	ivec2 mousePos;
+	SteeredWalker mWalker;
+	ivec2 mMousePos;
 };
 
 void exercise_0_3::setup()
 {
-	walker = SteeredWalker();
+	mWalker = SteeredWalker();
 }
 
 void exercise_0_3::update()
 {
-	vec2 dir = (vec2)mousePos - walker.pos;
+	vec2 dir = (vec2)mMousePos - mWalker.pos;
 	float len = glm::length(dir);
 	vec2 unitVector = dir / len;
 
@@ -50,20 +50,20 @@ void exercise_0_3::update()
 		left -= BIAS_RATIO * unitVector.x;
 	}
 
-	walker.mWeights = {up, down, left, right};
-	walker.step(3);
+	mWalker.mWeights = {up, down, left, right};
+	mWalker.step(3);
 }
 
 void exercise_0_3::draw()
 {
 	gl::clear(Color(0, 0, 0));
 
-	gl::color(Color(1,0,0));
-	gl::drawSolidCircle(mousePos, 3.0f);
+	gl::color(Color(1, 0, 0));
+	gl::drawSolidCircle(mMousePos, 3.0f);
 
 	gl::enableAlphaBlending();
 	gl::color(ColorA(1.0f, 1.0f, 1.0f, 0.25f));
-	for (const vec2& pos : walker.getPosHistory())
+	for (const vec2& pos : mWalker.getPosHistory())
 	{
 		gl::drawSolidCircle(pos, 1.0f);
 	}
@@ -71,12 +71,12 @@ void exercise_0_3::draw()
 
 void exercise_0_3::mouseMove(MouseEvent event)
 {
-	mousePos = event.getPos();
+	mMousePos = event.getPos();
 }
 
 void exercise_0_3::mouseDown(MouseEvent event)
 {
-	walker.reset();
+	mWalker.reset();
 }
 
 void exercise_0_3::keyDown(KeyEvent event)

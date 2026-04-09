@@ -20,12 +20,12 @@ public:
 	int acceptRejectDistribution(int);
 	void draw() override;
 	void keyDown(KeyEvent event) override;
-	std::vector<int> random_counts;
+	std::vector<int> mRandomCounts;
 };
 
 void example_0_5::setup()
 {
-	random_counts.assign(TOTAL_COUNT, 0);
+	mRandomCounts.assign(TOTAL_COUNT, 0);
 }
 
 void example_0_5::mouseDown(MouseEvent event)
@@ -35,8 +35,8 @@ void example_0_5::mouseDown(MouseEvent event)
 
 void example_0_5::update()
 {
-	int idx = example_0_5::acceptRejectDistribution(TOTAL_COUNT);
-	random_counts[idx]++;
+	int idx = acceptRejectDistribution(TOTAL_COUNT);
+	mRandomCounts[idx]++;
 }
 
 int example_0_5::acceptRejectDistribution(int range)
@@ -52,12 +52,12 @@ int example_0_5::acceptRejectDistribution(int range)
 void example_0_5::draw()
 {
 	gl::clear(Color(0, 0, 0));
-	float bin_width = (float)getWindowWidth() / TOTAL_COUNT;
+	float binWidth = (float)getWindowWidth() / TOTAL_COUNT;
 
 	for (int i = 0; i < TOTAL_COUNT; i++)
 	{
-		int curr_bin_height = random_counts[i];
-		Rectf rect(i * bin_width, getWindowHeight(), (i + 1) * bin_width, getWindowHeight() - curr_bin_height);
+		int currBinHeight = mRandomCounts[i];
+		Rectf rect(i * binWidth, getWindowHeight(), (i + 1) * binWidth, getWindowHeight() - currBinHeight);
 		gl::color(1.0f, 1.0f, 1.0f);
 		gl::drawSolidRect(rect);
 

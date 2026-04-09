@@ -4,6 +4,9 @@
 #include "cinder/Rand.h"
 #include "cinder/app/AppBase.h"
 
+using namespace ci;
+using namespace ci::app;
+
 struct StepWeights
 {
     float up;
@@ -15,20 +18,20 @@ struct StepWeights
 class WeightedWalker
 {
 public:
-    glm::vec2 pos;
-    std::vector<glm::vec2> pos_history;
+    vec2 mPos;
+    std::vector<vec2> mPosHistory;
     StepWeights mWeights;
 
     WeightedWalker() : mWeights{0.25f, 0.25f, 0.25f, 0.25f}
     {
-        pos.x = cinder::app::getWindowWidth() / 2.0f;
-        pos.y = cinder::app::getWindowHeight() / 2.0f;
+        mPos.x = getWindowWidth() / 2.0f;
+        mPos.y = getWindowHeight() / 2.0f;
     };
 
     WeightedWalker(StepWeights probs) : mWeights(probs)
     {
-        pos.x = cinder::app::getWindowWidth() / 2.0f;
-        pos.y = cinder::app::getWindowHeight() / 2.0f;
+        mPos.x = getWindowWidth() / 2.0f;
+        mPos.y = getWindowHeight() / 2.0f;
     };
 
     void step(float scale = 1.0f)
@@ -38,38 +41,38 @@ public:
         float thresholdLeft = thresholdDown + mWeights.left;
         float totalWeight = thresholdLeft + mWeights.right;
 
-        float r = cinder::randFloat(totalWeight);
+        float r = randFloat(totalWeight);
 
         if (r < thresholdUp)
         {
-            pos.y += 1.0f * scale;
+            mPos.y += 1.0f * scale;
         }
         else if (r < thresholdDown)
         {
-            pos.y -= 1.0f * scale;
+            mPos.y -= 1.0f * scale;
         }
         else if (r < thresholdLeft)
         {
-            pos.x -= 1.0f * scale;
+            mPos.x -= 1.0f * scale;
         }
         else
         {
-            pos.x += 1.0f * scale;
+            mPos.x += 1.0f * scale;
         }
 
-        pos_history.push_back(pos);
+        mPosHistory.push_back(mPos);
     }
 
-    const std::vector<glm::vec2>& getPosHistory() const
+    const std::vector<vec2>& getPosHistory() const
     {
-        return pos_history;
+        return mPosHistory;
     }
 
     void reset()
     {
-        pos_history.clear();
-        pos.x = cinder::app::getWindowWidth() / 2.0f;
-        pos.y = cinder::app::getWindowHeight() / 2.0f;
+        mPosHistory.clear();
+        mPos.x = getWindowWidth() / 2.0f;
+        mPos.y = getWindowHeight() / 2.0f;
     }
 };
 

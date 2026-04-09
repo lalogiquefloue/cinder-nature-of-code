@@ -16,7 +16,7 @@ public:
 	void draw() override;
 	void keyDown(KeyEvent event) override;
 
-	std::vector<vec2> points;
+	std::vector<vec2> mPoints;
 };
 
 void example_0_4::update()
@@ -27,7 +27,7 @@ void example_0_4::update()
 	float x = Rand::randGaussian() * stdDev + mean;
 	float y = getWindowHeight() / 2.0f;
 
-	points.push_back(vec2(x, y));
+	mPoints.push_back(vec2(x, y));
 }
 
 void example_0_4::draw()
@@ -37,7 +37,7 @@ void example_0_4::draw()
 	gl::enableAlphaBlending();
 	gl::color(ColorA(1.0f, 1.0f, 1.0f, 0.01f));
 
-	for (auto point : points)
+	for (auto point : mPoints)
 	{
 		gl::drawSolidCircle(point, 25.0f);
 	}

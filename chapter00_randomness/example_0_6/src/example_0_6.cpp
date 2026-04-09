@@ -17,13 +17,13 @@ public:
 	void update() override;
 	void draw() override;
 
-	PerlinWalker walker;
+	PerlinWalker mWalker;
 };
 
 
 void example_0_6::mouseDown(MouseEvent event)
 {
-	walker.reset();
+	mWalker.reset();
 }
 
 void example_0_6::keyDown(KeyEvent event)
@@ -36,7 +36,7 @@ void example_0_6::keyDown(KeyEvent event)
 
 void example_0_6::update()
 {
-	walker.step(5);
+	mWalker.step(5);
 }
 
 void example_0_6::draw()
@@ -44,14 +44,14 @@ void example_0_6::draw()
 	gl::clear(Color(0, 0, 0));
 	gl::enableAlphaBlending();
 
-	const auto& pos_history = walker.getPosHistory();
-	float historySize = static_cast<float>(pos_history.size());
+	const auto& posHistory = mWalker.getPosHistory();
+	float historySize = static_cast<float>(posHistory.size());
 
 	for (int i = 0; i < historySize; i++)
 	{
 		float alpha = (i / historySize) * 0.5f;
 		gl::color(ColorA(1.0f, 1.0f, 1.0f, alpha));
-		gl::drawSolidCircle(pos_history[i], 7.5f);
+		gl::drawSolidCircle(posHistory[i], 7.5f);
 	}
 }
 

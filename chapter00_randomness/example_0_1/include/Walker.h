@@ -4,50 +4,53 @@
 #include "cinder/Rand.h"
 #include "cinder/app/AppBase.h"
 
+using namespace ci;
+using namespace ci::app;
+
 class Walker
 {
 public:
-    glm::vec2 pos;
-    std::vector<glm::vec2> pos_history;
+    vec2 mPos;
+    std::vector<vec2> mPosHistory;
 
     Walker()
     {
-        pos.x = cinder::app::getWindowWidth() / 2.0f;
-        pos.y = cinder::app::getWindowHeight() / 2.0f;
+        mPos.x = getWindowWidth() / 2.0f;
+        mPos.y = getWindowHeight() / 2.0f;
     };
 
     void step(float scale = 1.0f)
     {
-        switch (cinder::randInt(4))
+        switch (randInt(4))
         {
         case 0:
-            pos.x += 1.0f * scale;
+            mPos.x += 1.0f * scale;
             break;
         case 1:
-            pos.x -= 1.0f * scale;
+            mPos.x -= 1.0f * scale;
             break;
         case 2:
-            pos.y += 1.0f * scale;
+            mPos.y += 1.0f * scale;
             break;
         case 3:
-            pos.y -= 1.0f * scale;
+            mPos.y -= 1.0f * scale;
             break;
         default:
             break;
         }
-        pos_history.push_back(pos);
+        mPosHistory.push_back(mPos);
     }
 
-    const std::vector<glm::vec2>& getPosHistory() const
+    const std::vector<vec2>& getPosHistory() const
     {
-        return pos_history;
+        return mPosHistory;
     }
 
     void reset()
     {
-        pos_history.clear();
-        pos.x = cinder::app::getWindowWidth() / 2.0f;
-        pos.y = cinder::app::getWindowHeight() / 2.0f;
+        mPosHistory.clear();
+        mPos.x = getWindowWidth() / 2.0f;
+        mPos.y = getWindowHeight() / 2.0f;
     }
 };
 

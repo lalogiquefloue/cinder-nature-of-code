@@ -14,60 +14,60 @@ using namespace ci::app;
 class PerlinWalker
 {
 public:
-    vec2 pos;
-    std::deque<vec2> pos_history;
+    vec2 mPos;
+    std::deque<vec2> mPosHistory;
 
-    Perlin perlin;
-    float tx = 0.0f;
-    float ty = 10000.0f;
+    Perlin mPerlin;
+    float mTx = 0.0f;
+    float mTy = 10000.0f;
 
     PerlinWalker()
     {
-        perlin = Perlin(4, 42);
-        pos.x = getWindowWidth() / 2.0f;
-        pos.y = getWindowHeight() / 2.0f;
+        mPerlin = Perlin(4, 42);
+        mPos.x = getWindowWidth() / 2.0f;
+        mPos.y = getWindowHeight() / 2.0f;
     };
 
     void step(float scale = 1.0f)
     {
-        float nx = perlin.fBm(tx, 0.0f);
-        float ny = perlin.fBm(ty, 100.0f);
+        float nx = mPerlin.fBm(mTx, 0.0f);
+        float ny = mPerlin.fBm(mTy, 100.0f);
 
         // Investigate the usage of the "noise" Perlin method, seems to converge towards center in a cross pattern
         // fBm is instead used to get the desired effect
         // float nx = perlin.noise(tx, 0.0f);
         // float ny = perlin.noise(ty, 100.0f);
 
-        pos.x = lmap(nx, -1.0f, 1.0f, 0.0f, (float)getWindowWidth());
-        pos.y = lmap(ny, -1.0f, 1.0f, 0.0f, (float)getWindowHeight());
+        mPos.x = lmap(nx, -1.0f, 1.0f, 0.0f, static_cast<float>(getWindowWidth()));
+        mPos.y = lmap(ny, -1.0f, 1.0f, 0.0f, static_cast<float>(getWindowHeight()));
 
-        tx += 0.001f * scale;
-        ty += 0.001f * scale;
+        mTx += 0.001f * scale;
+        mTy += 0.001f * scale;
 
-        pos_history.push_back(pos);
-        if (pos_history.size() > MAX_SIZE)
+        mPosHistory.push_back(mPos);
+        if (mPosHistory.size() > MAX_SIZE)
         {
-            pos_history.pop_front();
+            mPosHistory.pop_front();
         }
     }
 
     const std::deque<vec2>& getPosHistory() const
     {
-        return pos_history;
+        return mPosHistory;
     }
 
     void reset()
     {
-        pos_history.clear();
+        mPosHistory.clear();
 
         // new seed
-        perlin = Perlin(4, randInt());
+        mPerlin = Perlin(4, randInt());
 
         // reset position
-        tx = 0.0f;
-        ty = 10000.0f;
-        pos.x = getWindowWidth() / 2.0f;
-        pos.y = getWindowHeight() / 2.0f;
+        mTx = 0.0f;
+        mTy = 10000.0f;
+        mPos.x = getWindowWidth() / 2.0f;
+        mPos.y = getWindowHeight() / 2.0f;
     }
 };
 

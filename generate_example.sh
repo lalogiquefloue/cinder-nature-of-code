@@ -11,6 +11,11 @@ EXAMPLE_DIR=$2
 
 DIR="$CHAPTER_DIR/$EXAMPLE_DIR"
 
+if [ -d "$DIR" ]; then
+    echo "Error: Directory '$DIR' already exists. Aborting to prevent overwriting."
+    exit 1
+fi
+
 echo "Creating example in $DIR"
 
 mkdir -p "$DIR/src" "$DIR/include"
@@ -21,7 +26,7 @@ ci_make_app(
     APP_NAME    "$EXAMPLE_DIR"
     CINDER_PATH \${CINDER_PATH}
     SOURCES     \${CMAKE_CURRENT_SOURCE_DIR}/src/$EXAMPLE_DIR.cpp
-    # INCLUDES    \${CMAKE_CURRENT_SOURCE_DIR}/include
+    # INCLUDES    \${CMAKE_CURRENT_SOURCE_DIR}/include \${CMAKE_SOURCE_DIR}/include
     # RESOURCES   \${CMAKE_CURRENT_SOURCE_DIR}/resources
 )
 EOF
@@ -60,8 +65,10 @@ void $EXAMPLE_DIR::draw()
 CINDER_APP($EXAMPLE_DIR, RendererGl)
 EOF
 
-# echo >> CMakeLists.txt
-echo "add_subdirectory( $DIR )" >> CMakeLists.txt
+if grep -q "add_subdirectory( $DIR )" CMakeLists.txt; then
+    echo "Note: '$DIR' is already in the root CMakeLists.txt. Skipping duplicate append."
+else
+    echo "add_subdirectory( $DIR )" >> CMakeLists.txt
+fi
 
 echo "Example structure created successfully."
-echo "The new example has been added to the root CMakeLists.txt."
